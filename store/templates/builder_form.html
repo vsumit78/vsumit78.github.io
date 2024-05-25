@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Builder Recommendation Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            margin-top: 0;
+            font-size: 24px;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Enter your weights for each parameter (sum should be 100%):</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="price_cost_weight">Price Cost:</label>
+            <input type="number" name="price_cost_weight" min="0" max="100" required><br>
+
+            <label for="material_quality_weight">Material Quality:</label>
+            <input type="number" name="material_quality_weight" min="0" max="100" required><br>
+
+            <label for="design_looks_weight">Design & Looks:</label>
+            <input type="number" name="design_looks_weight" min="0" max="100" required><br>
+
+            <label for="time_weight">Time:</label>
+            <input type="number" name="time_weight" min="0" max="100" required><br>
+
+            <label for="behaviour_weight">Behaviour:</label>
+            <input type="number" name="behaviour_weight" min="0" max="100" required><br>
+
+            <input type="submit" value="Submit">
+            {% if error_message %}
+                <p class="error-message">{{ error_message }}</p>
+            {% endif %}
+        </form>
+    </div>
+</body>
+</html>

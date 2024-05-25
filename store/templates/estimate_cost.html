@@ -1,0 +1,32 @@
+<!-- estimate_cost.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estimate Cost</title>
+</head>
+<body>
+    <h1>House Cost Estimation</h1>
+    <table border="1">
+        <tr>
+            <th>Builder</th>
+            <th>Builder Photo</th>
+            <th>Past Experience Years</th>
+            <th>Number of Projects Done</th>
+            <th>Total Cost</th>
+            <th>Contact number</th>
+        </tr>
+        {% for estimation in estimations %}
+        <tr>
+            <td>{{ estimation.builder.name }}</td>
+            <td><img src="{{ estimation.builder_info.photo }}" alt="Builder Photo" width="100"></td>
+            <td>{{ estimation.builder_info.past_experience_years }}</td>
+            <td>{{ estimation.builder_info.number_of_projects_done }}</td>
+            <td>₹ {{ estimation.total_cost|floatformat:2 }}</td>
+            <td> {{ estimation.builder_info.contact_no }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block content %}
+    <h1>House Cost Estimation</h1>
+    <form id="costEstimationForm" action="{% url 'estimate_cost' %}" method="post">
+        {% csrf_token %}
+        <label for="floors">Number of Floors:</label>
+        <input type="number" id="floors" name="floors" required><br><br>
+
+        <div id="areaInputs">
+            <!-- Area input fields will be dynamically added here -->
+        </div>
+
+        <input type="checkbox" id="with_material" name="with_material" checked>
+        <label for="with_material">Build with Material</label><br><br>
+
+        <button type="submit">Estimate Cost</button>
+    </form>
+
+    <script>
+        document.getElementById('floors').addEventListener('input', function() {
+            var floors = parseInt(this.value);
+            var areaInputs = document.getElementById('areaInputs');
+            areaInputs.innerHTML = '';
+
+            for (var i = 1; i <= floors; i++) {
+                var label = document.createElement('label');
+                label.setAttribute('for', 'area_floor_' + i);
+                label.textContent = 'Area for Floor ' + i + ' (sq. ft):';
+                areaInputs.appendChild(label);
+
+                var input = document.createElement('input');
+                input.setAttribute('type', 'number');
+                input.setAttribute('id', 'area_floor_' + i);
+                input.setAttribute('name', 'area_floor_' + i);
+                input.setAttribute('placeholder', 'Enter area for Floor ' + i + ' in square feet');
+                input.required = true;
+                areaInputs.appendChild(input);
+
+                areaInputs.appendChild(document.createElement('br'));
+                areaInputs.appendChild(document.createElement('br'));
+            }
+        });
+    </script>
+{% endblock %}

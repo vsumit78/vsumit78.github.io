@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+{% load cart %}
+
+<!-- Custom CSS for styling -->
+<style>
+    body {
+        background-color: #f0f8ff; /* AliceBlue for the homepage background */
+    }
+    .list-group-item {
+        background-color: #6f42c1;
+        color: #fff;
+    }
+
+    .list-group-item:hover {
+        background-color: #5a35a0;
+        color: #ffc107;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card img {
+        height: 300px;
+        object-fit: contain;
+        border-bottom: 2px solid #6f42c1;
+    }
+
+    .card-title {
+        color: #6f42c1;
+        font-weight: bold;
+    }
+
+    .card-text {
+        color: #343a40;
+    }
+
+    .btn-light {
+        background-color: #ffc107;
+        color: #343a40;
+        border: none;
+    }
+
+    .btn-light:hover {
+        background-color: #e0a800;
+        color: #fff;
+    }
+
+    .btn-secondary {
+        background-color: #6f42c1;
+        border: none;
+    }
+
+    .btn-secondary:hover {
+        background-color: #5a35a0;
+        color: #ffc107;
+    }
+
+    .text-centre {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+</style>
+
+<!-- Body -->
+<div class="container-fluid mt-3">
+    <div class="row">
+        <!-- filter -->
+        <div class="col-lg-2 mx-auto">
+            <div class="list-group">
+                {% for category in categories %}
+                <a href="/?category={{ category.id }}"
+                   class="list-group-item list-group-item-action">{{ category.name }}</a>
+                {% endfor %}
+                <a href="{% url 'builder_recommendation' %}" class="list-group-item list-group-item-action">BUILDER RECOMMENDATION</a>
+                <a href="{% url 'estimate_cost' %}" class="list-group-item list-group-item-action">ESTIMATE HOUSE COST</a>
+                <a href="{% url 'house_recommendation' %}" class="list-group-item list-group-item-action">House MAP </a>
+            </div>
+        </div>
+        <!--- all products -->
+        <div id="products" class="col-lg-9 mx-auto">
+            <div class="row">
+                {% for product in products %}
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100" id="{{ product.id }}">
+                        <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text"><b>₹{{ product.price }}</b></p>
+                            <p class="card-text">{{ product.description }}</p>
+                            <div>
+                                <div class="card-footer row p-0">
+                                    {% if product|is_in_cart:request.session.cart %}
+                                    <p>
+                                    <div class="row nu-gutter">
+                                        <form action="" class="col-2" method="post">
+                                            {% csrf_token %}
+                                            <input hidden type="text" name='product' value='{{ product.id }}'>
+                                            <input hidden type="text" name='remove' value='True'>
+                                            <input type="submit" value=" - " class="btn btn-block btn-secondary">
+                                        </form>
+                                        <div class="text-centre col">{{ product|cart_quantity:request.session.cart }} in cart</div>
+                                        <form action="" class="col-2" method="post">
+                                            {% csrf_token %}
+                                            <input hidden type="text" name='product' value='{{ product.id }}'>
+                                            <input type="submit" value=" + " class="btn btn-block btn-secondary">
+                                        </form>
+                                    </div>
+                                    </p>
+                                    {% else %}
+                                    <p>
+                                    <form action="/#{{ product.id }}" method="POST" class="btn-block">
+                                        {% csrf_token %}
+                                        <input hidden type="text" name='product' value='{{ product.id }}'>
+                                        <input type="submit" class="float-right btn-light border form-control" value="Add to cart">
+                                    </form>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

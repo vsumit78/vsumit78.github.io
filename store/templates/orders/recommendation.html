@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Builder Recommendation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            margin-top: 0;
+            color: #555;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Builder Recommendation</h1>
+        <ul>
+            {% for builder, score in rankings %}
+                <li>
+                    <h2>{{ builder.name }}</h2>
+                    <p><strong>Price Cost:</strong> {{ builder.price_cost }}</p>
+                    <p><strong>Material Quality:</strong> {{ builder.get_material_quality_display }}</p>
+                    <p><strong>Design Looks:</strong> {{ builder.get_design_looks_display }}</p>
+                    <p><strong>Time:</strong> {{ builder.get_time_display }}</p>
+                    <p><strong>Behaviour:</strong> {{ builder.get_behaviour_display }}</p>
+                    <p><strong>Past Experience (Years):</strong> {{ builder.past_experience_years }}</p>
+                    <p><strong>Number of Projects Done:</strong> {{ builder.number_of_projects_done }}</p>
+                    <p><strong>Score:</strong> {{ score }}</p>
+                    <div>
+                        <h3>Builder Photo:</h3>
+                        {% if builder.builder_photo %}
+                            <img src="{{ builder.builder_photo.url }}" alt="{{ builder.name }} Photo">
+                        {% else %}
+                            <p>No builder photo available</p>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <h3>Project Photos:</h3>
+                        <ul>
+                            {% for project in builder.project_set.all %}
+                                <li><img src="{{ project.photo.url }}" alt="Project Photo"></li>
+                            {% empty %}
+                                <li>No project photos available</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
